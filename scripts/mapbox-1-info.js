@@ -1,14 +1,13 @@
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ';
 
-  
+
 var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v10',
   center: [-0.0844093, 51.4894947],
-  zoom: 18,
+  zoom: 12,
 });
-
 
 //Open trip map
 var apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
@@ -30,4 +29,5 @@ function apiGet(method, query) {
       .catch(function (err) {
         console.log('Fetch Error :-S', err);
       });
-  });}
+  });
+}

@@ -69,10 +69,10 @@ var params = document.getElementById('params');
 
 // Create variables to use in getIso()
 var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
-var lon = -0.0844093;
-var lat = 51.4894947;
-var profile = 'cycling';
-var minutes = 10;
+var lon = -0.10234470000000001;
+var lat = 51.483421799999995;
+var profile = 'walking';
+var minutes = 5;
 
 
 // Set up a marker that you can use to show the query's coordinates
@@ -151,3 +151,16 @@ map.on('load', function () {
   // Make the API call
   getIso();
 });
+
+//switch layers
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+
+function switchLayer(layer) {
+  var layerId = layer.target.id;
+  map.setStyle('mapbox://styles/mapbox/' + layerId);
+}
+
+for (var i = 0; i < inputs.length; i++) {
+  inputs[i].onclick = switchLayer;
+}
