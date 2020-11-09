@@ -10,7 +10,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
     <link
       rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
       type="text/css"
     />
     <link
@@ -18,17 +18,57 @@
       rel="stylesheet"
     />
     <script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
+     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
     <link
       href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
       rel="stylesheet"
     />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script> -->
+    <script type="text/javascript" src="https://opentripmap.io/js/directory.en.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet"/>
+     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./styles/styles.css" />
   </head>
 
   <body>
     <nav id="menu"></nav>
     <div id="map"></div>
+    <div class='absolute fl my24 mx24 py24 px24 bg-gray-faint round'>
+  <form id='params'>
+    <h4 class='txt-m txt-bold mb6'>Chose a travel mode:</h4>
+    <div class='mb12 mr12 toggle-group align-center'>
+      <label class='toggle-container'>
+        <input name='profile' type='radio' value='walking'>
+        <div class='toggle toggle--active-null toggle--null'>Walking</div>
+      </label>
+      <label class='toggle-container'>
+        <input name='profile' type='radio' value='cycling' checked>
+        <div class='toggle toggle--active-null toggle--null'>Cycling</div>
+      </label>
+      <label class='toggle-container'>
+        <input name='profile' type='radio' value='driving'>
+        <div class='toggle toggle--active-null toggle--null'>Driving</div>
+      </label>
+    </div>
+    <h4 class='txt-m txt-bold mb6'>Chose a maximum duration:</h4>
+    <div class='mb12 mr12 toggle-group align-center'>
+      <label class='toggle-container'>
+        <input name='duration' type='radio' value='10' checked>
+        <div class='toggle toggle--active-null toggle--null'>10 min</div>
+      </label>
+      <label class='toggle-container'>
+        <input name='duration' type='radio' value='20'>
+        <div class='toggle toggle--active-null toggle--null'>20 min</div>
+      </label>
+      <label class='toggle-container'>
+        <input name='duration' type='radio' value='30'>
+        <div class='toggle toggle--active-null toggle--null'>30 min</div>
+      </label>
+  </form>
+</div>
     <script src="./scripts/index.js"></script>
     <!-- <script src="./scripts/breezometer.js"></script> -->
   </body>

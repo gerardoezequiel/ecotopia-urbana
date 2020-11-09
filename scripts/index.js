@@ -1,4 +1,3 @@
-//API key Open Trip Map - https://opentripmap.io -
 var apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
 //API request
@@ -23,6 +22,7 @@ function apiGet(method, query) {
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ';
+  
 
 var map = new mapboxgl.Map({
   container: 'map',
@@ -60,7 +60,11 @@ map.addControl(
 );
 
 //togleable layers
-var toggleableLayerIds = ['urban-environment', 'urban-environment-heatmap'];
+var toggleableLayerIds = [
+  'urban environment',
+  'urban environment heatmap',
+  'breezometer-tiles',
+];
 
 // set up the corresponding toggle button for each layer
 for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -92,9 +96,12 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
   layers.appendChild(link);
 }
 //!Loading the layers
+
 map.on('load', function () {
+  
+
   //Add pois layer to the map
-  map.addSource('urban-environment', {
+  map.addSource('urban environment', {
     type: 'vector',
     attribution:
       '<a href="https://opentripmap.io" target="_blank">© Gerardo Ezequiel</a>',
@@ -103,14 +110,14 @@ map.on('load', function () {
     maxzoom: 15,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=urban_environment&rate=3&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=museums&rate=1&apikey=' +
         apiKey,
     ],
   });
   map.addLayer({
-    id: 'urban-environment',
+    id: 'urban environment',
     type: 'circle',
-    source: 'urban-environment',
+    source: 'urban environment',
     'source-layer': 'pois',
     minzoom: 8,
     paint: {
@@ -122,22 +129,22 @@ map.on('load', function () {
   });
 
   //Add heat layer to the map
-  map.addSource('urban-environment-heatmap', {
+  map.addSource('urban environment heatmap', {
     type: 'vector',
     bounds: [-180, -85.0511, 180, 85.0511],
     minzoom: 1,
     maxzoom: 8,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=urban_environment&rate=3&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=museums&rate=1&apikey=' +
         apiKey,
     ],
   });
   map.addLayer(
     {
-      id: 'urban-environment-heatmap',
+      id: 'urban environment heatmap',
       type: 'heatmap',
-      source: 'urban-environment-heatmap',
+      source: 'urban environment heatmap',
       'source-layer': 'heat',
       minzoom: 1,
       maxzoom: 12,
@@ -177,7 +184,7 @@ map.on('load', function () {
         },
       },
     },
-    'urban-environment',
+    'urban environment',
   );
 });
 
@@ -196,10 +203,15 @@ function onShowPOI(data, lngLat) {
     ? data.info.descr
     : 'No description';
 
+  poi.innerHTML +=
+    "<p><a target='_blank' href='" +
+    data.otm +
+    "'>Show more at OpenTripMap</a></p>";
+
   new mapboxgl.Popup().setLngLat(lngLat).setDOMContent(poi).addTo(map);
 }
 
-map.on('click', 'urban-environment', function (e) {
+map.on('click', 'urban environment', function (e) {
   let coordinates = e.features[0].geometry.coordinates.slice();
   let id = e.features[0].properties.id;
   let name = e.features[0].properties.name;
@@ -217,7 +229,7 @@ let popup = new mapboxgl.Popup({
   closeOnClick: false,
 });
 
-map.on('mouseenter', 'urban-environment', function (e) {
+map.on('mouseenter', 'urban environment', function (e) {
   map.getCanvas().style.cursor = 'pointer';
 
   let coordinates = e.features[0].geometry.coordinates.slice();
@@ -234,7 +246,7 @@ map.on('mouseenter', 'urban-environment', function (e) {
     .addTo(map);
 });
 
-map.on('mouseleave', 'urban-environment', function () {
+map.on('mouseleave', 'urban environment', function () {
   map.getCanvas().style.cursor = '';
   popup.remove();
 });
@@ -287,4 +299,164 @@ map.on('load', function () {
     },
     labelLayerId,
   );
+});
+/* 
+//Adding air quality data 
+
+ var apiKey = '8736ffa82743491abc5ed685a0c45f17'; // Your BreezoMeter API key
+var mapBoxAccessToken =
+  'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ'; // your mapbox access token from: https://account.mapbox.com
+
+map.on('load', function () {
+  addRasterSource();
+  addRasterLayer();
+});
+
+function addRasterSource() {
+  map.addSource('breezometer-tiles', {
+    type: 'raster',
+    tiles: [
+      `https://tiles.breezometer.com/v1/air-quality/breezometer-aqi/current-conditions/{z}/{x}/{y}.png?key=${apiKey}&breezometer_aqi_color=indiper`,
+    ],
+    tileSize: 256,
+    maxzoom: 8,
+  });
+}
+
+function addRasterLayer() {
+  map.addLayer(
+    {
+      id: 'breezometer-tiles',
+      type: 'raster',
+      source: 'breezometer-tiles',
+      minzoom: 0,
+      maxzoom: 22,
+      paint: {
+        'raster-opacity': 0.6,
+      },
+    },
+    'admin-1-boundary-bg',
+  );
+}
+
+map.on('load', function () {
+  addRoadsSource();
+  addRoadsLayer();
+});
+
+function addRoadsSource() {
+  map.addSource('roads', {
+    type: 'vector',
+    tiles: [
+      `https://tiles.breezometer.com/v1/air-quality/traffic-pollution/current-conditions/{z}/{x}/{y}.pbf?key=${apiKey}`,
+    ],
+    minzoom: 0,
+    maxzoom: 10,
+  });
+}
+
+function addRoadsLayer() {
+  map.addLayer(
+    {
+      id: 'road-borders',
+      source: 'roads',
+      'source-layer': 'brz-roads',
+      type: 'line',
+      layout: {
+        'line-cap': 'round',
+      },
+      minzoom: 3,
+      maxzoom: 24,
+    },
+    'admin-1-boundary-bg',
+  );
+}
+ */
+
+//Isochrone API
+
+var params = document.getElementById('params');
+
+// Create variables to use in getIso()
+var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+var lon = -77.034;
+var lat = 38.899;
+var profile = 'cycling';
+var minutes = 10;
+
+// Set up a marker that you can use to show the query's coordinates
+var marker = new mapboxgl.Marker({
+  color: '#314ccd',
+});
+
+// Create a LngLat object to use in the marker initialization
+// https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
+var lngLat = {
+  lon: lon,
+  lat: lat,
+};
+
+// Create a function that sets up the Isochrone API query then makes an Ajax call
+function getIso() {
+  var query =
+    urlBase +
+    profile +
+    '/' +
+    lon +
+    ',' +
+    lat +
+    '?contours_minutes=' +
+    minutes +
+    '&polygons=true&access_token=' +
+    mapboxgl.accessToken;
+
+  $.ajax({
+    method: 'GET',
+    url: query,
+  }).done(function (data) {
+    // Set the 'iso' source's data to what's returned by the API query
+    map.getSource('iso').setData(data);
+  });
+}
+
+// When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
+params.addEventListener('change', function (e) {
+  if (e.target.name === 'profile') {
+    profile = e.target.value;
+    getIso();
+  } else if (e.target.name === 'duration') {
+    minutes = e.target.value;
+    getIso();
+  }
+});
+
+map.on('load', function () {
+  // When the map loads, add the source and layer
+  map.addSource('iso', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: [],
+    },
+  });
+
+  map.addLayer(
+    {
+      id: 'isoLayer',
+      type: 'fill',
+      source: 'iso',
+      layout: {},
+      paint: {
+        'fill-color': '#5a3fc0',
+        'fill-opacity': 0.3,
+      },
+    },
+    'poi-label',
+  );
+
+  // Initialize the marker at the query coordinates
+  marker.setLngLat(lngLat).addTo(map);
+
+  // Make the API call
+  getIso();
 });
