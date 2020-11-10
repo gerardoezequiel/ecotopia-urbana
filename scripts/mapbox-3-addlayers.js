@@ -21,6 +21,7 @@ map.on('load', function () {
     type: 'circle',
     source: 'urban environment',
     'source-layer': 'pois',
+    layout: { visibility: 'none' },
     minzoom: 8,
     paint: {
       'circle-color': 'rgb(55,144,144)',
@@ -48,6 +49,7 @@ map.on('load', function () {
       type: 'heatmap',
       source: 'urban environment heatmap',
       'source-layer': 'heat',
+      layout: { visibility: 'none' },
       minzoom: 1,
       maxzoom: 12,
       filter: ['all'],
@@ -89,7 +91,6 @@ map.on('load', function () {
     'urban environment',
   );
 });
-
 
 //Adding 3d-buildings
 

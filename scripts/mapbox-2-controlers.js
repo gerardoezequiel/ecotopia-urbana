@@ -31,6 +31,9 @@ var toggleableLayerIds = [
   'urban environment',
   'urban environment heatmap',
   'breezometer-tiles',
+  'open-weather-map',
+  'isoLayer',
+  '3d-buildings'
 ];
 
 // set up the corresponding toggle button for each layer
@@ -73,7 +76,6 @@ var lon = -0.10234470000000001;
 var lat = 51.483421799999995;
 var profile = 'walking';
 var minutes = 5;
-
 
 // Set up a marker that you can use to show the query's coordinates
 var marker = new mapboxgl.Marker({

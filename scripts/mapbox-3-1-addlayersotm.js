@@ -11,7 +11,7 @@ map.on('load', function () {
     maxzoom: 15,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=urban_environment&rate=1&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=natural&rate=1&apikey=' +
         apiKey,
     ],
   });
@@ -20,6 +20,7 @@ map.on('load', function () {
     type: 'circle',
     source: 'urban environment',
     'source-layer': 'pois',
+    layout: { visibility: 'none' },
     minzoom: 8,
     paint: {
       'circle-color': 'rgb(55,144,144)',
@@ -37,7 +38,7 @@ map.on('load', function () {
     maxzoom: 8,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=urban_environment&rate=1&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=adult&rate=1&apikey=' +
         apiKey,
     ],
   });
@@ -47,6 +48,7 @@ map.on('load', function () {
       type: 'heatmap',
       source: 'urban environment heatmap',
       'source-layer': 'heat',
+      layout: { visibility: 'none' },
       minzoom: 1,
       maxzoom: 12,
       filter: ['all'],
