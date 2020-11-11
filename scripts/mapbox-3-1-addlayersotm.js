@@ -1,3 +1,28 @@
+//Open trip map
+var apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
+
+//API request
+function apiGet(method, query) {
+  return new Promise(function (resolve, reject) {
+    var otmAPI =
+      'https://api.opentripmap.com/0.1/en/places/' +
+      method +
+      '?apikey=' +
+      apiKey;
+    if (query !== undefined) {
+      otmAPI += '&' + query;
+    }
+    fetch(otmAPI)
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+      });
+  });
+}
+
+
+
 //Adding info from otm
 
 map.on('load', function () {
@@ -7,11 +32,11 @@ map.on('load', function () {
     attribution:
       '<a href="https://www.linkedin.com/in/gerardoezequiel/" target="_blank">© Gerardo Ezequiel</a>',
     bounds: [-180, -85.0511, 180, 85.0511],
-    minzoom: 8,
-    maxzoom: 15,
+    minzoom: 10,
+    maxzoom: 20,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=natural&rate=1&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=interesting_places&rate=3&apikey=' +
         apiKey,
     ],
   });
@@ -20,8 +45,8 @@ map.on('load', function () {
     type: 'circle',
     source: 'urban environment',
     'source-layer': 'pois',
-    layout: { visibility: 'none' },
-    minzoom: 8,
+    /* layout: { visibility: 'none' }, */
+    minzoom: 10,
     paint: {
       'circle-color': 'rgb(55,144,144)',
       'circle-radius': 5,
@@ -30,15 +55,17 @@ map.on('load', function () {
     },
   });
 
+  
+
   //Add heat layer to the map
   map.addSource('urban environment heatmap', {
     type: 'vector',
     bounds: [-180, -85.0511, 180, 85.0511],
-    minzoom: 1,
-    maxzoom: 8,
+    minzoom: 3,
+    maxzoom: 10,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=adult&rate=1&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=interesting_places&rate=3&apikey=' +
         apiKey,
     ],
   });
@@ -48,9 +75,9 @@ map.on('load', function () {
       type: 'heatmap',
       source: 'urban environment heatmap',
       'source-layer': 'heat',
-      layout: { visibility: 'none' },
-      minzoom: 1,
-      maxzoom: 12,
+     /*  layout: { visibility: 'none' }, */
+      minzoom: 3,
+      maxzoom: 10,
       filter: ['all'],
       paint: {
         'heatmap-radius': {
@@ -85,8 +112,14 @@ map.on('load', function () {
             [8, 0.3],
           ],
         },
+        'heatmap-opacity-transition': {
+          duration: 2000,
+          delay: 0,
+        },
       },
     },
     'urban environment',
   );
 });
+
+
