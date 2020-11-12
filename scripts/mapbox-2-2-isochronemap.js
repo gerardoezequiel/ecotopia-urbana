@@ -25,7 +25,11 @@ var lngLat = {
 };
 
 // Create a function that sets up the Isochrone API query then makes an Ajax call
-function getIso() {
+async function getIso() {
+  // const [longitude, latitude] = await getLocation();
+
+  // console.log({ coordinates });
+
   var query =
     urlBase +
     profile +
