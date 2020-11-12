@@ -1,3 +1,8 @@
+import { addOpenTripLayer } from './open-trip.js';
+import { addIsoChrone, onChangeParams } from './isochrone.js';
+import { getLabelLayerId } from './helper-functions.js';
+import { addBuildingLayer } from './building.js';
+
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ';
 
@@ -118,13 +123,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     draggable: false,
   });
 
-  // Create a LngLat object to use in the marker initialization
-  // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
-  // var lngLat = {
-  //   lon: lon,
-  //   lat: lat,
-  // };
-
   // Create a function that sets up the Isochrone API query then makes an Ajax call
   const getIso = async () => {
     const query = `${urlBase}${profile}/${longitude},${latitude}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`;
@@ -135,45 +133,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
 
-  const onChangeParams = async (event) => {
-    if (event.target.name === 'profile') {
-      profile = event.target.value;
-      await getIso();
-    } else if (event.target.name === 'duration') {
-      minutes = event.target.value;
-      await getIso();
-    }
-  };
-
   params.addEventListener('change', onChangeParams);
 
   map.on('load', async () => {
-    // When the map loads, add the source and layer
-    map.addSource('iso', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [],
-      },
-    });
-
-    map.addLayer(
-      {
-        id: 'isoLayer',
-        type: 'fill',
-        source: 'iso',
-        layout: { visibility: 'none' },
-        paint: {
-          'fill-color': '#5a3fc0',
-          'fill-opacity': 0.3,
-        },
-      },
-      'poi-label',
-    );
-
-    // Initialize the marker at the query coordinates
-    marker.setLngLat({ lon: longitude, lat: latitude }).addTo(map);
-    await getIso();
+    await addIsoChrone({ map, marker, getIso, longitude, latitude });
+    addOpenTripLayer(map);
+    addBuildingLayer(map);
   });
 
   map.addControl(
@@ -188,26 +153,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   //Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
-  //API request
-  // function apiGet(method, query) {
-  //   return new Promise(function (resolve, reject) {
-  //     var otmAPI =
-  //       'https://api.opentripmap.com/0.1/en/places/' +
-  //       method +
-  //       '?apikey=' +
-  //       apiKey;
-  //     if (query !== undefined) {
-  //       otmAPI += '&' + query;
-  //     }
-  //     fetch(otmAPI)
-  //       .then((response) => response.json())
-  //       .then((data) => resolve(data))
-  //       .catch(function (err) {
-  //         console.log('Fetch Error :-S', err);
-  //       });
-  //   });
-  // }
-
   const apiGet = async (method, query) => {
     const url =
       query !== undefined
@@ -218,152 +163,49 @@ window.addEventListener('DOMContentLoaded', async () => {
     return await response.json();
   };
 
-  map.on('load', () => {
-    //Stylization
+  // map.on('load', () => {
+  //   // Insert the layer beneath any symbol layer.
+  //   const layers = map.getStyle().layers;
 
-    //Add pois layer to the map
-    map.addSource('opentripmap.pois', {
-      type: 'vector',
-      attribution:
-        '<a href="https://opentripmap.io" target="_blank">© OpenTripMap</a>',
-      bounds: [-180, -85.0511, 180, 85.0511],
-      minzoom: 8,
-      maxzoom: 14,
-      scheme: 'xyz',
-      tiles: [
-        'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=museums&rate=2&apikey=' +
-          apiKey,
-      ],
-    });
+  //   const labelLayerId = getLabelLayerId(layers);
 
-    map.addLayer(
-      {
-        id: 'opentripmap-pois',
-        type: 'circle',
-        source: 'opentripmap.pois',
-        'source-layer': 'pois',
-        minzoom: 8,
-        paint: {
-          'circle-color': 'rgb(55,144,144)',
-          'circle-radius': 5,
-          'circle-stroke-color': 'rgba(102,193,201, 0.6)',
-          'circle-stroke-width': 0.6,
-        },
-      },
-      'airport-label',
-    );
+  //   map.addLayer(
+  //     {
+  //       id: '3d-buildings',
+  //       source: 'composite',
+  //       'source-layer': 'building',
+  //       filter: ['==', 'extrude', 'true'],
+  //       type: 'fill-extrusion',
+  //       minzoom: 15,
+  //       paint: {
+  //         'fill-extrusion-color': '#aaa',
 
-    //Add heat layer to the map
-    map.addSource('opentripmap.heat', {
-      type: 'vector',
-      bounds: [-180, -85.0511, 180, 85.0511],
-      minzoom: 1,
-      maxzoom: 8,
-      scheme: 'xyz',
-      tiles: [
-        'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=museums&rate=2&apikey=' +
-          apiKey,
-      ],
-    });
-    map.addLayer(
-      {
-        id: 'opentripmap-heat',
-        type: 'heatmap',
-        source: 'opentripmap.heat',
-        'source-layer': 'heat',
-        minzoom: 1,
-        maxzoom: 10,
-        filter: ['all'],
-        paint: {
-          'heatmap-radius': {
-            stops: [
-              [1, 4],
-              [10, 20],
-            ],
-          },
-          'heatmap-weight': ['get', 'n'],
-          'heatmap-color': [
-            'interpolate',
-            ['linear'],
-            ['heatmap-density'],
-            0,
-            'rgba(236,222,239,0)',
-            0.1,
-            'rgb(210,180,160)',
-            0.2,
-            'rgb(255,221,149)',
-            0.6,
-            'rgb(253,104,96)',
-          ],
-          'heatmap-intensity': {
-            stops: [
-              [3, 0.1],
-              [8, 0.8],
-            ],
-          },
-          'heatmap-opacity': {
-            stops: [
-              [1, 0.9],
-              [8, 0.3],
-            ],
-          },
-        },
-      },
-      'opentripmap-pois',
-    );
-  });
-
-  const getLabelLayerId = (layers) => {
-    const { id: labelLayerId } = layers.find(
-      (layer) => layer.type === 'symbol' && layer.layout['text-field'],
-    );
-
-    return labelLayerId;
-  };
-
-  map.on('load', () => {
-    // Insert the layer beneath any symbol layer.
-    const layers = map.getStyle().layers;
-
-    const labelLayerId = getLabelLayerId(layers);
-
-    map.addLayer(
-      {
-        id: '3d-buildings',
-        source: 'composite',
-        'source-layer': 'building',
-        filter: ['==', 'extrude', 'true'],
-        type: 'fill-extrusion',
-        minzoom: 15,
-        paint: {
-          'fill-extrusion-color': '#aaa',
-
-          // use an 'interpolate' expression to add a smooth transition effect to the
-          // buildings as the user zooms in
-          'fill-extrusion-height': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            15,
-            0,
-            15.05,
-            ['get', 'height'],
-          ],
-          'fill-extrusion-base': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            15,
-            0,
-            15.05,
-            ['get', 'min_height'],
-          ],
-          'fill-extrusion-opacity': 0.6,
-        },
-      },
-      labelLayerId,
-    );
-  });
+  //         // use an 'interpolate' expression to add a smooth transition effect to the
+  //         // buildings as the user zooms in
+  //         'fill-extrusion-height': [
+  //           'interpolate',
+  //           ['linear'],
+  //           ['zoom'],
+  //           15,
+  //           0,
+  //           15.05,
+  //           ['get', 'height'],
+  //         ],
+  //         'fill-extrusion-base': [
+  //           'interpolate',
+  //           ['linear'],
+  //           ['zoom'],
+  //           15,
+  //           0,
+  //           15.05,
+  //           ['get', 'min_height'],
+  //         ],
+  //         'fill-extrusion-opacity': 0.6,
+  //       },
+  //     },
+  //     labelLayerId,
+  //   );
+  // });
 
   map.on('load', function () {
     const apiKey = '8736ffa82743491abc5ed685a0c45f17';
