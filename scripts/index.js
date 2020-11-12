@@ -1,5 +1,5 @@
 import { addOpenTripLayer } from './open-trip.js';
-import { addIsoChrone, onChangeParams } from './isochrone.js';
+import { addIsoChrone } from './isochrone.js';
 import { addBuildingLayer } from './building.js';
 import { addBreezometer } from './breezeometer.js';
 import { addOpenWeather } from './open-weather.js';
@@ -17,14 +17,10 @@ const getLocation = function () {
   });
 };
 
-let longitude;
-let latitude;
-let map;
-
 window.addEventListener('DOMContentLoaded', async () => {
-  [longitude, latitude] = await getLocation();
+  const [longitude, latitude] = await getLocation();
 
-  map = new mapboxgl.Map({
+  const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
     attributionControl: false,
@@ -130,6 +126,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch(query);
     const data = await response.json();
     map.getSource('iso').setData(data);
+  };
+
+  const onChangeParams = async (event) => {
+    if (event.target.name === 'profile') {
+      profile = event.target.value;
+      await getIso();
+    } else if (event.target.name === 'duration') {
+      minutes = event.target.value;
+      await getIso();
+    }
   };
 
   // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again

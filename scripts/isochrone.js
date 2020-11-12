@@ -30,13 +30,3 @@ export const addIsoChrone = async ({
   marker.setLngLat({ lon: longitude, lat: latitude }).addTo(map);
   await getIso();
 };
-
-export const onChangeParams = async (event) => {
-  if (event.target.name === 'profile') {
-    profile = event.target.value;
-    await getIso();
-  } else if (event.target.name === 'duration') {
-    minutes = event.target.value;
-    await getIso();
-  }
-};
