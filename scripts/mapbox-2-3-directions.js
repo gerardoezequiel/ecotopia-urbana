@@ -7,6 +7,7 @@ mapboxgl.accessToken =
   zoom: 13,
 }); */
 
+
 map.addControl(
   new MapboxDirections({
     accessToken: mapboxgl.accessToken,
@@ -15,3 +16,16 @@ map.addControl(
   }),
   'bottom-left',
 );
+ 
+/* 
+map.on('load', () => {
+  button.addEventListener('dblclick', function () {
+    map.removeControl(directions);
+  });
+
+  removeWaypointsButton.addEventListener('dblclick', function () {
+    directions.removeRoutes();
+  });
+
+  
+});  */

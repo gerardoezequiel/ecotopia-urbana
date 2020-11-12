@@ -6,8 +6,8 @@ var params = document.getElementById('params');
 
 // Create variables to use in getIso()
 https: var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
-var lon = -0.10234470000000001;
-var lat = 51.483421799999995;
+var lon = -0.08225;
+var lat = 51.48952;
 var profile = 'walking';
 var minutes = 5;
 
