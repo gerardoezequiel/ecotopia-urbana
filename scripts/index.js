@@ -1,7 +1,8 @@
 import { addOpenTripLayer } from './open-trip.js';
 import { addIsoChrone, onChangeParams } from './isochrone.js';
-import { getLabelLayerId } from './helper-functions.js';
 import { addBuildingLayer } from './building.js';
+import { addBreezometer } from './breezeometer.js';
+import { addOpenWeather } from './open-weather.js';
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ';
@@ -139,6 +140,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     await addIsoChrone({ map, marker, getIso, longitude, latitude });
     addOpenTripLayer(map);
     addBuildingLayer(map);
+    addBreezometer(map);
+    addOpenWeather(map);
   });
 
   map.addControl(
@@ -162,99 +165,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch(url);
     return await response.json();
   };
-
-  // map.on('load', () => {
-  //   // Insert the layer beneath any symbol layer.
-  //   const layers = map.getStyle().layers;
-
-  //   const labelLayerId = getLabelLayerId(layers);
-
-  //   map.addLayer(
-  //     {
-  //       id: '3d-buildings',
-  //       source: 'composite',
-  //       'source-layer': 'building',
-  //       filter: ['==', 'extrude', 'true'],
-  //       type: 'fill-extrusion',
-  //       minzoom: 15,
-  //       paint: {
-  //         'fill-extrusion-color': '#aaa',
-
-  //         // use an 'interpolate' expression to add a smooth transition effect to the
-  //         // buildings as the user zooms in
-  //         'fill-extrusion-height': [
-  //           'interpolate',
-  //           ['linear'],
-  //           ['zoom'],
-  //           15,
-  //           0,
-  //           15.05,
-  //           ['get', 'height'],
-  //         ],
-  //         'fill-extrusion-base': [
-  //           'interpolate',
-  //           ['linear'],
-  //           ['zoom'],
-  //           15,
-  //           0,
-  //           15.05,
-  //           ['get', 'min_height'],
-  //         ],
-  //         'fill-extrusion-opacity': 0.6,
-  //       },
-  //     },
-  //     labelLayerId,
-  //   );
-  // });
-
-  map.on('load', function () {
-    const apiKey = '8736ffa82743491abc5ed685a0c45f17';
-    // Insert the layer beneath any symbol layer.
-    const layers = map.getStyle().layers;
-
-    const labelLayerId = getLabelLayerId(layers);
-
-    map.addSource('breezometer-tiles', {
-      type: 'raster',
-      tiles: [
-        `https://tiles.breezometer.com/v1/air-quality/breezometer-aqi/current-conditions/{z}/{x}/{y}.png?key=${apiKey}&breezometer_aqi_color=indiper`,
-      ],
-      tileSize: 256,
-      maxzoom: 8,
-    });
-
-    map.addLayer(
-      {
-        id: 'breezometer-tiles',
-        type: 'raster',
-        source: 'breezometer-tiles',
-        layout: { visibility: 'none' },
-        minzoom: 0,
-        maxzoom: 22,
-        paint: {
-          'raster-opacity': 0.6,
-        },
-      },
-      'admin-1-boundary-bg',
-    );
-  });
-
-  map.on('load', function () {
-    map.addLayer({
-      id: 'open-weather-map',
-      type: 'raster',
-      source: {
-        type: 'raster',
-        tiles: [
-          'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=0c356d282baa6385fe0e0b14d8cbeb3e',
-        ],
-        tileSize: 256,
-      },
-      layout: { visibility: 'none' },
-      minzoom: 0,
-      maxzoom: 22,
-    });
-  });
 
   function onShowPOI(data, lngLat) {
     let poi = document.createElement('div');
@@ -317,7 +227,3 @@ window.addEventListener('DOMContentLoaded', async () => {
     popup.remove();
   });
 }); // end of window onload
-
-// map.on('load', async () => {
-//   await map.flyTo({ center: [longitude, latitude], zoom: 15 });
-// });
