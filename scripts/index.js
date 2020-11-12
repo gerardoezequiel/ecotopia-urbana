@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     marker: {
       color: 'red',
     },
-    mapboxgl: mapboxgl,
+    mapboxgl,
   });
 
   map.addControl(geocoder);
@@ -71,101 +71,83 @@ window.addEventListener('DOMContentLoaded', async () => {
     '3d-buildings',
   ];
 
-  // set up the corresponding toggle button for each layer
-  for (var i = 0; i < toggleableLayerIds.length; i++) {
-    var id = toggleableLayerIds[i];
-
-    var link = document.createElement('a');
+  toggleableLayerIds.forEach((id) => {
+    const link = document.createElement('a');
     link.href = '#';
     link.className = 'active';
     link.textContent = id;
 
-    link.onclick = function (e) {
-      var clickedLayer = this.textContent;
-      e.preventDefault();
-      e.stopPropagation();
+    link.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-      var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+      const clickedLayer = event.currentTarget.textContent;
+
+      const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
 
       // toggle layer visibility by changing the layout object's visibility property
       if (visibility === 'visible') {
         map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-        this.className = '';
+        event.currentTarget.className = '';
       } else {
-        this.className = 'active';
+        event.currentTarget.className = 'active';
         map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
       }
     };
 
-    var layers = document.getElementById('menu');
+    const layers = document.getElementById('menu');
     layers.appendChild(link);
-  }
+  });
 
   //Isochrone API
 
-  var params = document.getElementById('params');
+  const params = document.getElementById('params');
 
   //api.mapbox.com/isochrone/v1/mapbox/cycling/-0.09401410262574927%2C51.4876156400322?contours_minutes=15%2C30%2C45%2C60&polygons=true&denoise=1&generalize=0&access_token=YOUR_MAPBOX_ACCESS_TOKEN
 
   // Create variables to use in getIso()
-  https: var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
-  var lon = -0.10234470000000001;
-  var lat = 51.483421799999995;
-  var profile = 'walking';
-  var minutes = 5;
+  const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+  // var lon = -0.10234470000000001;
+  // var lat = 51.483421799999995;
+  let profile = 'walking';
+  let minutes = 5;
 
   // Set up a marker that you can use to show the query's coordinates
-  var marker = new mapboxgl.Marker({
+  const marker = new mapboxgl.Marker({
     color: '#314ccd',
     draggable: false,
   });
 
   // Create a LngLat object to use in the marker initialization
   // https://docs.mapbox.com/mapbox-gl-js/api/#lnglat
-  var lngLat = {
-    lon: lon,
-    lat: lat,
-  };
+  // var lngLat = {
+  //   lon: lon,
+  //   lat: lat,
+  // };
 
   // Create a function that sets up the Isochrone API query then makes an Ajax call
-  async function getIso() {
-    // const [longitude, latitude] = await getLocation();
-
-    // console.log({ coordinates });
-
-    var query =
-      urlBase +
-      profile +
-      '/' +
-      lon +
-      ',' +
-      lat +
-      '?contours_minutes=' +
-      minutes +
-      '&polygons=true&access_token=' +
-      mapboxgl.accessToken;
-
-    $.ajax({
-      method: 'GET',
-      url: query,
-    }).done(function (data) {
-      // Set the 'iso' source's data to what's returned by the API query
-      map.getSource('iso').setData(data);
-    });
-  }
+  const getIso = async () => {
+    const query = `${urlBase}${profile}/${longitude},${latitude}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`;
+    const response = await fetch(query);
+    const data = await response.json();
+    map.getSource('iso').setData(data);
+  };
 
   // When a user changes the value of profile or duration by clicking a button, change the parameter's value and make the API query again
-  params.addEventListener('change', function (e) {
-    if (e.target.name === 'profile') {
-      profile = e.target.value;
-      getIso();
-    } else if (e.target.name === 'duration') {
-      minutes = e.target.value;
-      getIso();
-    }
-  });
 
-  map.on('load', function () {
+  const onChangeParams = async (event) => {
+    if (event.target.name === 'profile') {
+      profile = event.target.value;
+      await getIso();
+    } else if (event.target.name === 'duration') {
+      minutes = event.target.value;
+      await getIso();
+    }
+  };
+
+  params.addEventListener('change', onChangeParams);
+
+  map.on('load', async () => {
     // When the map loads, add the source and layer
     map.addSource('iso', {
       type: 'geojson',
@@ -190,10 +172,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     );
 
     // Initialize the marker at the query coordinates
-    marker.setLngLat(lngLat).addTo(map);
-
-    // Make the API call
-    getIso();
+    marker.setLngLat({ lon: longitude, lat: latitude }).addTo(map);
+    await getIso();
   });
 
   map.addControl(
