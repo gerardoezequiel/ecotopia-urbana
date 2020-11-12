@@ -1,5 +1,3 @@
-//Show information by click
-
 function onShowPOI(data, lngLat) {
   let poi = document.createElement('div');
   poi.innerHTML = '<h2>' + data.name + '<h2>';
@@ -21,7 +19,7 @@ function onShowPOI(data, lngLat) {
   new mapboxgl.Popup().setLngLat(lngLat).setDOMContent(poi).addTo(map);
 }
 
-map.on('click', 'urban environment', function (e) {
+map.on('click', 'opentripmap-pois', function (e) {
   let coordinates = e.features[0].geometry.coordinates.slice();
   let id = e.features[0].properties.id;
   let name = e.features[0].properties.name;
@@ -39,7 +37,7 @@ let popup = new mapboxgl.Popup({
   closeOnClick: false,
 });
 
-map.on('mouseenter', 'urban environment', function (e) {
+map.on('mouseenter', 'opentripmap-pois', function (e) {
   map.getCanvas().style.cursor = 'pointer';
 
   let coordinates = e.features[0].geometry.coordinates.slice();
@@ -56,8 +54,7 @@ map.on('mouseenter', 'urban environment', function (e) {
     .addTo(map);
 });
 
-map.on('mouseleave', 'urban environment', function () {
+map.on('mouseleave', 'opentripmap-pois', function () {
   map.getCanvas().style.cursor = '';
   popup.remove();
 });
-

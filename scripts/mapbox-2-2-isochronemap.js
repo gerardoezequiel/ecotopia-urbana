@@ -2,8 +2,10 @@
 
 var params = document.getElementById('params');
 
+//api.mapbox.com/isochrone/v1/mapbox/cycling/-0.09401410262574927%2C51.4876156400322?contours_minutes=15%2C30%2C45%2C60&polygons=true&denoise=1&generalize=0&access_token=YOUR_MAPBOX_ACCESS_TOKEN
+
 // Create variables to use in getIso()
-var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
+https: var urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
 var lon = -0.10234470000000001;
 var lat = 51.483421799999995;
 var profile = 'walking';

@@ -1,7 +1,7 @@
 //togleable layers
 var toggleableLayerIds = [
-  'urban environment',
-  'urban environment heatmap',
+  'interesting places',
+  'interesting places heatmap',
   'breezometer-tiles',
   'open-weather-map',
   'isoLayer',

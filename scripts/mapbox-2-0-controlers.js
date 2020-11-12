@@ -18,7 +18,6 @@ geocoder.on('result', function (e) {
 });
 // Add the geocoder to the map
 
-
 //Navigation control
 map.addControl(new mapboxgl.NavigationControl());
 
@@ -34,6 +33,3 @@ map.addControl(
     trackUserLocation: true,
   }),
 );
-
-
-
