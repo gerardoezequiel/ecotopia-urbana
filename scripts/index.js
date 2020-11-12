@@ -186,29 +186,39 @@ window.addEventListener('DOMContentLoaded', async () => {
   );
 
   //Open trip map
-  var apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
+  const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
   //API request
-  function apiGet(method, query) {
-    return new Promise(function (resolve, reject) {
-      var otmAPI =
-        'https://api.opentripmap.com/0.1/en/places/' +
-        method +
-        '?apikey=' +
-        apiKey;
-      if (query !== undefined) {
-        otmAPI += '&' + query;
-      }
-      fetch(otmAPI)
-        .then((response) => response.json())
-        .then((data) => resolve(data))
-        .catch(function (err) {
-          console.log('Fetch Error :-S', err);
-        });
-    });
-  }
+  // function apiGet(method, query) {
+  //   return new Promise(function (resolve, reject) {
+  //     var otmAPI =
+  //       'https://api.opentripmap.com/0.1/en/places/' +
+  //       method +
+  //       '?apikey=' +
+  //       apiKey;
+  //     if (query !== undefined) {
+  //       otmAPI += '&' + query;
+  //     }
+  //     fetch(otmAPI)
+  //       .then((response) => response.json())
+  //       .then((data) => resolve(data))
+  //       .catch(function (err) {
+  //         console.log('Fetch Error :-S', err);
+  //       });
+  //   });
+  // }
 
-  map.on('load', function () {
+  const apiGet = async (method, query) => {
+    const url =
+      query !== undefined
+        ? `https://api.opentripmap.com/0.1/en/places/${method}?apikey=${apiKey}&${query}`
+        : `https://api.opentripmap.com/0.1/en/places/${method}?apikey=${apiKey}`;
+
+    const response = await fetch(url);
+    return await response.json();
+  };
+
+  map.on('load', () => {
     //Stylization
 
     //Add pois layer to the map
@@ -225,6 +235,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           apiKey,
       ],
     });
+
     map.addLayer(
       {
         id: 'opentripmap-pois',
@@ -302,17 +313,19 @@ window.addEventListener('DOMContentLoaded', async () => {
     );
   });
 
-  map.on('load', function () {
-    // Insert the layer beneath any symbol layer.
-    var layers = map.getStyle().layers;
+  const getLabelLayerId = (layers) => {
+    const { id: labelLayerId } = layers.find(
+      (layer) => layer.type === 'symbol' && layer.layout['text-field'],
+    );
 
-    var labelLayerId;
-    for (var i = 0; i < layers.length; i++) {
-      if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-        labelLayerId = layers[i].id;
-        break;
-      }
-    }
+    return labelLayerId;
+  };
+
+  map.on('load', () => {
+    // Insert the layer beneath any symbol layer.
+    const layers = map.getStyle().layers;
+
+    const labelLayerId = getLabelLayerId(layers);
 
     map.addLayer(
       {
@@ -353,17 +366,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   map.on('load', function () {
-    var apiKey = '8736ffa82743491abc5ed685a0c45f17';
+    const apiKey = '8736ffa82743491abc5ed685a0c45f17';
     // Insert the layer beneath any symbol layer.
-    var layers = map.getStyle().layers;
+    const layers = map.getStyle().layers;
 
-    var labelLayerId;
-    for (var i = 0; i < layers.length; i++) {
-      if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-        labelLayerId = layers[i].id;
-        break;
-      }
-    }
+    const labelLayerId = getLabelLayerId(layers);
 
     map.addSource('breezometer-tiles', {
       type: 'raster',
