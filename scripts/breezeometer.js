@@ -8,6 +8,8 @@ export const addBreezometer = (map) => {
 
   map.addSource('breezometer-tiles', {
     type: 'raster',
+    atribution:
+      '<a href="https://opentripmap.io" target="_blank">© Breezometer</a>',
     tiles: [
       `https://tiles.breezometer.com/v1/air-quality/breezometer-aqi/current-conditions/{z}/{x}/{y}.png?key=${apiKey}&breezometer_aqi_color=indiper`,
     ],

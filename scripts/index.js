@@ -23,30 +23,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
-    attributionControl: false,
+    attributionControl: true,
     center: [longitude, latitude],
     zoom: 10,
   });
-
-  //Geocoder
-  const geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    marker: {
-      color: 'red',
-    },
-    mapboxgl,
-  });
-
-  map.addControl(geocoder);
-
-  geocoder.on('result', (e) => {
-    console.log(e.result.center);
-    geocoder.clear();
-    new mapboxgl.Marker({ draggable: true, color: 'red' })
-      .setLngLat(e.result.center)
-      .addTo(map);
-  });
-  // Add the geocoder to the map
 
   //Navigation control
   map.addControl(new mapboxgl.NavigationControl());
@@ -63,6 +43,32 @@ window.addEventListener('DOMContentLoaded', async () => {
       trackUserLocation: true,
     }),
   );
+  map.addControl(
+    new MapboxDirections({
+      accessToken: mapboxgl.accessToken,
+      unit: 'metric',
+      profile: 'mapbox/walking',
+    }),
+    'bottom-left',
+  );
+  const directionsElement = document.getElementById('remove-directions');
+
+  directionsElement.addEventListener('click', function () {
+    if (
+      document.getElementsByClassName('mapboxgl-ctrl-directions').length == 0
+    ) {
+      map.addControl(directions);
+    } else {
+      map.removeControl(directions);
+    }
+  });
+
+  document
+    .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
+    .remove();
+  document
+    .querySelector('label[for="mapbox-directions-profile-driving"]')
+    .remove();
 
   const toggleableLayerIds = [
     'interesting places',
@@ -149,15 +155,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     addBreezometer(map);
     addOpenWeather(map);
   });
-
-  map.addControl(
-    new MapboxDirections({
-      accessToken: mapboxgl.accessToken,
-      unit: 'metric',
-      profile: 'mapbox/walking',
-    }),
-    'bottom-left',
-  );
 
   //Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';

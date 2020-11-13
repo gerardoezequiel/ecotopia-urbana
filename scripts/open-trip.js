@@ -19,7 +19,7 @@ export const addOpenTripLayer = (map) => {
 
   map.addLayer(
     {
-      id: 'opentripmap-pois',
+      id: 'interesting places',
       type: 'circle',
       source: 'opentripmap.pois',
       'source-layer': 'pois',
@@ -49,7 +49,7 @@ export const addOpenTripLayer = (map) => {
 
   map.addLayer(
     {
-      id: 'opentripmap-heat',
+      id: 'interesting places heatmap',
       type: 'heatmap',
       source: 'opentripmap.heat',
       'source-layer': 'heat',
@@ -91,6 +91,6 @@ export const addOpenTripLayer = (map) => {
         },
       },
     },
-    'opentripmap-pois',
+    'interesting places',
   );
 };
