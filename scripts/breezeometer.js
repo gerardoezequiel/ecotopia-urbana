@@ -1,15 +1,10 @@
-map.on('load', function () {
-  var apiKey = '8736ffa82743491abc5ed685a0c45f17';
-  // Insert the layer beneath any symbol layer.
-  var layers = map.getStyle().layers;
+import { getLabelLayerId } from './helper-functions.js';
 
-  var labelLayerId;
-  for (var i = 0; i < layers.length; i++) {
-    if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-      labelLayerId = layers[i].id;
-      break;
-    }
-  }
+export const addBreezometer = (map) => {
+  const apiKey = '8736ffa82743491abc5ed685a0c45f17';
+  const layers = map.getStyle().layers;
+
+  getLabelLayerId(layers);
 
   map.addSource('breezometer-tiles', {
     type: 'raster',
@@ -34,4 +29,4 @@ map.on('load', function () {
     },
     'admin-1-boundary-bg',
   );
-});
+};

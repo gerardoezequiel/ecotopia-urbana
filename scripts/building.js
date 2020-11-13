@@ -1,16 +1,12 @@
-map.on('load', function () {
+import { getLabelLayerId } from './helper-functions.js';
+
+export const addBuildingLayer = (map) => {
   // Insert the layer beneath any symbol layer.
-  var layers = map.getStyle().layers;
+  const layers = map.getStyle().layers;
 
-  var labelLayerId;
-  for (var i = 0; i < layers.length; i++) {
-    if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-      labelLayerId = layers[i].id;
-      break;
-    }
-   }
+  const labelLayerId = getLabelLayerId(layers);
 
-    map.addLayer(
+  map.addLayer(
     {
       id: '3d-buildings',
       source: 'composite',
@@ -46,4 +42,4 @@ map.on('load', function () {
     },
     labelLayerId,
   );
-});
+};

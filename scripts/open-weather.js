@@ -1,4 +1,4 @@
-map.on('load', function () {
+export const addOpenWeather = (map) => {
   map.addLayer({
     id: 'open-weather-map',
     type: 'raster',
@@ -13,4 +13,4 @@ map.on('load', function () {
     minzoom: 0,
     maxzoom: 22,
   });
-});
+};
