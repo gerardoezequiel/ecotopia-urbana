@@ -216,12 +216,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     
   });
 
-  
-    
-  
-    
-
-
   //Show popup by mousemove
 
   let popup = new mapboxgl.Popup({
