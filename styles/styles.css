@@ -8,6 +8,32 @@
   right: 0;
   left: 0;
 }
+img {
+  margin: auto;
+  padding: 10px;
+  display: block;
+  width: 200px;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: .5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-top: 0;
+}
+
+@media (min-width: 600px){
+  img {
+    margin: auto;
+    padding: 10px;
+    display: block;
+    width: 400px;
+  }
+  .mapboxgl-popup {
+    max-width: 500px !important;
+  }
+}
 
 img {
   margin: auto;
@@ -28,21 +54,23 @@ h2 {
 #menu {
   display: flex;
   align-items: center;
+  padding: 3px;
   background: #fff;
   position: absolute;
   z-index: 1;
   bottom: 2%;
   right: 30%;
   border-radius: 3px;
-  width: 569px;
+  width: 595px;
   border: 1px solid rgba(0, 0, 0, 0.4);
   font-family: 'Open Sans', sans-serif;
 }
 
 #menu a {
+  padding: 3px;
   font-size: 11px;
   color: #404040;
-  display: block;
+  display: flex;
   margin: 0;
   padding: 0;
   padding: 3px;
@@ -51,22 +79,24 @@ h2 {
   text-align: center;
 }
 
-#menu a:last-child {
+/* #menu a:last-child {
   border: none;
 }
-
+ */
 #menu a:hover {
-  background-color: #f8f8f8;
+  background-color: #941a1a;
   color: #404040;
 }
 
 #menu a.active {
-  background-color: #3887be;
+  background-color: #1a461e6c;
   color: #ffffff;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10%;
 }
 
 #menu a.active:hover {
-  background: #3074a4;
+  background: #b82121;
 }
 
 #remove-directions {
@@ -76,17 +106,7 @@ h2 {
   width: 100px;
   font-family: 'Open Sans', sans-serif;
 }
-@media (min-width: 600px) {
-  img {
-    margin: auto;
-    padding: 10px;
-    display: block;
-    width: 400px;
-  }
-  .mapboxgl-popup {
-    max-width: 500px;
-  }
-}
+
 
 .mapboxgl-ctrl-logo {
   display: none !important;

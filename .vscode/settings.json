@@ -15,5 +15,7 @@
     "titleBar.inactiveBackground": "#42b88399",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.remoteColor": "#42b883"
+  "peacock.remoteColor": "#42b883",
+  "peacock.color": "#42b882",
+  "liveServer.settings.multiRootWorkspaceName": "ecotopia-urbana"
 }

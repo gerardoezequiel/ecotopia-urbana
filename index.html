@@ -1,95 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ecotopia Urbana Map</title>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <!-- Styles -->
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+      type="text/css"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <!-- <link rel="stylesheet" href="./styles/mapbbox-gl-directions.css" />  -->
+    <!-- Scripts -->
+    <script
+      type="text/javascript"
+      src="https://opentripmap.io/js/directory.en.js"
+    ></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
 
-<head>
-  <meta charset="utf-8" />
-  <title>Ecotopia Urbana Map</title>
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <!-- Styles -->
-  <link rel="stylesheet"
-    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
-    type="text/css" />
-  <link href="https://api.mapbox.com/mapbox-assembly/v0.24.0/assembly.min.css" rel="stylesheet" />
-  <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
-  <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
-  <link rel="stylesheet"
-    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
-    type="text/css" />
-  <link href="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles/styles.css" />
-  <!-- <link rel="stylesheet" href="./styles/mapbbox-gl-directions.css" />  -->
-  <!-- Scripts -->
-  <script
-    src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
-  <script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
-  <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
-  <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
-  <script type="text/javascript" src="https://opentripmap.io/js/directory.en.js"></script>
-  <!-- <script  src="/scripts/mapbox-gl-directions.js"></script> -->
-  
-  <script
-    src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
-</head>
+    <script
+      type="text/javascript"
+      src="https://opentripmap.io/js/directory.en.js"
+    ></script>
+    <!--  <script  src="/scripts/mapbox-gl-directions.js"></script>  -->
 
-<body>
-  <nav id="menu"></nav>
-  <div id="map"></div>
-  <div id='remove-directions'>Turn off directions</div>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+  </head>
 
-  <div class="absolute fl my24 mx24 py20 px20 bg-gray-faint round">
-    <form id="params">
-      <h4 class="txt-sm txt-bold mb6">Chose a travel mode:</h4>
-      <div class="mb5 mr1 toggle-group align-center">
-        <label class="toggle-container">
-          <input name="profile" type="radio" value="walking" checked />
-          <div class="toggle toggle--s toggle--active-null toggle--null">
-            Walking
-          </div>
-        </label>
-        <label class="toggle-container">
-          <input name="profile" type="radio" value="cycling" />
-          <div class="toggle toggle--s toggle--active-null toggle--null">
-            Cycling
-          </div>
-        </label>
-        <!-- <label class='toggle-container'>
+  <body>
+    <nav id="menu"></nav>
+    <div id="map"></div>
+    <!--  <div id='remove-directions'>Turn off directions</div> -->
+
+    <div class="absolute fl my24 mx24 py20 px20 bg-gray-faint round">
+      <form id="params">
+        <h4 class="txt-sm txt-bold mb6">Chose a travel mode:</h4>
+        <div class="mb5 mr1 toggle-group align-center">
+          <label class="toggle-container">
+            <input name="profile" type="radio" value="walking" checked />
+            <div class="toggle toggle--s toggle--active-null toggle--null">
+              Walking
+            </div>
+          </label>
+          <label class="toggle-container">
+            <input name="profile" type="radio" value="cycling" />
+            <div class="toggle toggle--s toggle--active-null toggle--null">
+              Cycling
+            </div>
+          </label>
+          <!-- <label class='toggle-container'>
         <input name='profile' type='radio' value='driving'>
         <div class='toggle toggle--active-null toggle--null'>Driving</div>
       </label> -->
-      </div>
-      <h4 class="txt-sm txt-bold mb6">Chose a maximum duration:</h4>
-      <div class="mb12 mr12 toggle-group align-center">
-        <label class="toggle-container">
-          <input name="duration" type="radio" value="5" checked />
-          <div class="toggle toggle--s toggle--active-null toggle--null">
-            5 min
-          </div>
-        </label>
-        <label class="toggle-container">
-          <input name="duration" type="radio" value="15" />
-          <div class="toggle toggle--s toggle--active-null toggle--null">
-            15 min
-          </div>
-        </label>
-        <label class="toggle-container">
-          <input name="duration" type="radio" value="30" />
-          <div class="toggle toggle--s toggle--s toggle--active-null toggle--null">
-            30 min
-          </div>
-        </label>
-        <label class="toggle-container">
-          <input name="duration" type="radio" value="60" />
-          <div class="toggle toggle--s toggle--s toggle--active-null toggle--null">
-            60 min
-          </div>
-        </label>
-      </div>
-    </form>
-  </div>
+        </div>
+        <h4 class="txt-sm txt-bold mb6">Chose a maximum duration:</h4>
+        <div class="mb12 mr12 toggle-group align-center">
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="5" checked />
+            <div class="toggle toggle--s toggle--active-null toggle--null">
+              5 min
+            </div>
+          </label>
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="15" />
+            <div class="toggle toggle--s toggle--active-null toggle--null">
+              15 min
+            </div>
+          </label>
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="30" />
+            <div
+              class="toggle toggle--s toggle--s toggle--active-null toggle--null"
+            >
+              30 min
+            </div>
+          </label>
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="60" />
+            <div
+              class="toggle toggle--s toggle--s toggle--active-null toggle--null"
+            >
+              60 min
+            </div>
+          </label>
+        </div>
+      </form>
+    </div>
 
-  <!-- <script src="./scripts/index.js"></script> -->
-  <script type="module" src="./scripts/index.js"></script>
-</body>
-
+    <!-- <script src="./scripts/index.js"></script> -->
+    <script type="module" src="./scripts/index.js"></script>
+    <!-- <script src="./scripts/mapbox-4-otm-popup.js"></script>  -->
+  </body>
 </html>

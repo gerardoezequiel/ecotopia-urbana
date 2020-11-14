@@ -1,11 +1,11 @@
-import { addOpenTripLayer } from './open-trip.js';
+import { addOpenTripLayer } from './opentripmap.js';
 import { addIsoChrone } from './isochrone.js';
-import { addBuildingLayer } from './building.js';
+import { addBuildingLayer } from './buildings3d.js';
 import { addBreezometer } from './breezeometer.js';
 import { addOpenWeather } from './open-weather.js';
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ';
+  'pk.eyJ1IjoiZWZhY3VuZG9hcmdhbmEiLCJhIjoiY2p3em8wNzkzMHV0eDN6cG9xMDkyY3MweCJ9.BFwFTr19FLGdPHqxA8qkiQ';
 
 const getLocation = function () {
   return new Promise((resolve, reject) => {
@@ -43,32 +43,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       trackUserLocation: true,
     }),
   );
-  map.addControl(
-    new MapboxDirections({
-      accessToken: mapboxgl.accessToken,
-      unit: 'metric',
-      profile: 'mapbox/walking',
-    }),
-    'bottom-left',
-  );
-  const directionsElement = document.getElementById('remove-directions');
-
-  directionsElement.addEventListener('click', function () {
-    if (
-      document.getElementsByClassName('mapboxgl-ctrl-directions').length == 0
-    ) {
-      map.addControl(directions);
-    } else {
-      map.removeControl(directions);
-    }
-  });
-
-  document
-    .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
-    .remove();
-  document
-    .querySelector('label[for="mapbox-directions-profile-driving"]')
-    .remove();
 
   const toggleableLayerIds = [
     'interesting places',
@@ -115,8 +89,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Create variables to use in getIso()
   const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
-  // var lon = -0.10234470000000001;
-  // var lat = 51.483421799999995;
+  //lon = -0.10234470000000001;
+  //lat = 51.483421799999995;
   let profile = 'walking';
   let minutes = 5;
 
@@ -126,7 +100,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     draggable: false,
   });
 
-  // Create a function that sets up the Isochrone API query then makes an Ajax call
+  //Create a function that sets up the Isochrone API query then makes a call
   const getIso = async () => {
     const query = `${urlBase}${profile}/${longitude},${latitude}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`;
     const response = await fetch(query);
@@ -155,6 +129,27 @@ window.addEventListener('DOMContentLoaded', async () => {
     addBreezometer(map);
     addOpenWeather(map);
   });
+
+  //Adding directions
+  map.addControl(
+    new MapboxDirections({
+      accessToken: mapboxgl.accessToken,
+      unit: 'metric',
+      profile: 'mapbox/walking',
+      setOrigin: [longitude, latitude],
+      alternatives: true,
+    }),
+    'bottom-left',
+  );
+
+  //Removing the driving and driving traffic buttom
+  document
+    .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
+    .remove();
+  document
+    .querySelector('label[for="mapbox-directions-profile-driving"]')
+    .remove();
+
 
   //Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';

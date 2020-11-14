@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Ecotopia Urbana Map</title>
+  
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js"></script>
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./home.css" />
+</head>
+
+<body>
+  <div class="info">
+    <h1>Radar <not-anymore>Google maps</not-anymore> MapBox</h1>
+    <p>
+      Below this CSS rotating PNG is a
+      <not-anymore>Google maps</not-anymore> MapBox map. <br />Between them
+      are some SVG which <em>masks out</em> the radar image, and some lines
+      and circles to make it look more like a radar.
+    </p>
+    <p>
+      You may drag the map and zoom in and out. Events and dragging of
+      anything but the map has been disabled using CSS
+      <code>pointer-events: none; user-select: none;</code>
+    </p>
+  </div>
+  <svg width="1600" height="1600" viewbox="0 0 600 600" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" id="grid">
+    <path d="M 110 30 l 0 30 M 115 30 l 0 30" fill="none" />
+    <path d="M 110 165 l 0 30 M 115 165 l 0 30" fill="none" />
+    <path d="M 60 115 l -30 0 M 60 110 l -30 0" fill="none" />
+    <path d="M 195 115 l -30 0 M 195 110 l -30 0" fill="none" />
+    <circle cx="112" cy="112" r="72" />
+    <circle cx="112" cy="112" r="45" />
+    <circle cx="112" cy="112" r="22" />
+    <circle cx="112" cy="112" r="20" />
+    <circle cx="112" cy="112" r="10" />
+  </svg>
+  <img id="radar" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9729/circle.png" alt="" />
+  <svg width="3200" height="3200" viewbox="0 0 1200 1200" version="1.1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+    <mask id="mask2" x="0" y="0" width="80" height="80">
+      <path d="M 0 0 L 2600 0 2600 2600 0 2600 0 0 M 185 185 m -150, 0 a 150,150 0 1,0 300,0 a 150,150 0 1,0 -300,0"
+        fill="white" style="transform: scale(0.6)" />
+    </mask>
+
+    <rect x="0" y="0" width="600" height="600" fill="black" style="mask: url(#mask2)" />
+    <rect x="300" y="0" width="2600" height="2600" fill="black" style="mask: url(#mask2)" />
+  </svg>
+
+  <!-- <iframe1 width="600" height="420" src="http://maps.stamen.com/toner/embed#12/37.7848/-122.2909"></iframe> -->
+
+  <div id="map"></div>
+  <script src="./home.js"></script>
+</body>
+
+</html>
