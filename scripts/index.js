@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     style: 'mapbox://styles/mapbox/light-v10',
     attributionControl: true,
     center: [longitude, latitude],
-    zoom: 10,
+    zoom: 14,
   });
 
   //Navigation control
@@ -131,7 +131,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   //Adding directions
-  map.addControl(
+  /* map.addControl(
     new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
@@ -140,8 +140,23 @@ window.addEventListener('DOMContentLoaded', async () => {
       alternatives: true,
     }),
     'bottom-left',
-  );
+  ); */
 
+  var directions = new MapboxDirections({
+    unit: 'metric',
+    profile: 'mapbox/walking',
+    setOrigin: [longitude, latitude],
+    alternatives: true,
+    accessToken: mapboxgl.accessToken,
+  });
+
+  map.addControl(directions, 'bottom-left');
+
+  map.on('load', function () {
+    directions.setOrigin([longitude, latitude]); // can be address in form setOrigin("12, Elm Street, NY")
+    
+  });
+    
   //Removing the driving and driving traffic buttom
   document
     .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
@@ -150,7 +165,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     .querySelector('label[for="mapbox-directions-profile-driving"]')
     .remove();
 
-
+  
   //Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
@@ -183,18 +198,29 @@ window.addEventListener('DOMContentLoaded', async () => {
       "'>Show more at OpenTripMap</a></p>";
 
     new mapboxgl.Popup().setLngLat(lngLat).setDOMContent(poi).addTo(map);
+    const popup = document.getElementsByClassName('mapboxgl-popup');
+    if (popup.length) {
+      popup[0].remove();
+    }
   }
-
-  map.on('click', 'opentripmap-pois', function (e) {
-    let coordinates = e.features[0].geometry.coordinates.slice();
-    let id = e.features[0].properties.id;
-    let name = e.features[0].properties.name;
+  map.on('mouseenter', 'opentripmap-pois', function (e) {
+    map.getCanvas().style.cursor = 'pointer';
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    var id = e.features[0].properties.id;
+    var name = e.features[0].properties.name;
 
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
     apiGet('xid/' + id).then((data) => onShowPOI(data, e.lngLat));
+    
   });
+
+  
+    
+  
+    
+
 
   //Show popup by mousemove
 
