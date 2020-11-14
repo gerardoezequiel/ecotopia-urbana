@@ -7,10 +7,6 @@
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
     <!-- Styles -->
     <link
       rel="stylesheet"
@@ -39,20 +35,30 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles/styles.css" />
+    <!-- <link rel="stylesheet" href="./styles/mapbbox-gl-directions.css" />  -->
     <!-- Scripts -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
-    <script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
     <script
       type="text/javascript"
       src="https://opentripmap.io/js/directory.en.js"
     ></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-assembly/v0.23.2/assembly.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+
+    <script
+      type="text/javascript"
+      src="https://opentripmap.io/js/directory.en.js"
+    ></script>
+    <!--  <script  src="/scripts/mapbox-gl-directions.js"></script>  -->
+
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
   </head>
+
   <body>
     <nav id="menu"></nav>
     <div id="map"></div>
+    <!--  <div id='remove-directions'>Turn off directions</div> -->
 
     <div class="absolute fl my24 mx24 py20 px20 bg-gray-faint round">
       <form id="params">
@@ -97,11 +103,20 @@
               30 min
             </div>
           </label>
+          <label class="toggle-container">
+            <input name="duration" type="radio" value="60" />
+            <div
+              class="toggle toggle--s toggle--s toggle--active-null toggle--null"
+            >
+              60 min
+            </div>
+          </label>
         </div>
       </form>
     </div>
 
     <!-- <script src="./scripts/index.js"></script> -->
     <script type="module" src="./scripts/index.js"></script>
+    <!-- <script src="./scripts/mapbox-4-otm-popup.js"></script>  -->
   </body>
 </html>

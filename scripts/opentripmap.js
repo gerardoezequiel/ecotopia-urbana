@@ -1,7 +1,7 @@
 const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 export const addOpenTripLayer = (map) => {
   //Stylization
-
+  
   //Add pois layer to the map
   map.addSource('opentripmap.pois', {
     type: 'vector',

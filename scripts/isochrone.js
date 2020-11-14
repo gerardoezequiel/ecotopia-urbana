@@ -5,6 +5,7 @@ export const addIsoChrone = async ({
   longitude,
   latitude,
 }) => {
+  
   map.addSource('iso', {
     type: 'geojson',
     data: {
@@ -18,7 +19,7 @@ export const addIsoChrone = async ({
       id: 'isoLayer',
       type: 'fill',
       source: 'iso',
-      layout: { visibility: 'none' },
+      /* layout: { visibility: 'none' }, */
       paint: {
         'fill-color': '#5a3fc0',
         'fill-opacity': 0.3,

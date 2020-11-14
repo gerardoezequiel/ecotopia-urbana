@@ -5,7 +5,7 @@ export const addBuildingLayer = (map) => {
   const layers = map.getStyle().layers;
 
   const labelLayerId = getLabelLayerId(layers);
-
+  
   map.addLayer(
     {
       id: '3d-buildings',

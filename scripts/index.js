@@ -1,11 +1,11 @@
-import { addOpenTripLayer } from './open-trip.js';
+import { addOpenTripLayer } from './opentripmap.js';
 import { addIsoChrone } from './isochrone.js';
-import { addBuildingLayer } from './building.js';
+import { addBuildingLayer } from './buildings3d.js';
 import { addBreezometer } from './breezeometer.js';
 import { addOpenWeather } from './open-weather.js';
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoiZ2VyYWV6ZW1jIiwiYSI6ImNqM3N4YTY5ODAwNjYzMXFtd21peHp1b2sifQ.A-Y5AaoJWzn7tXFa1vvmlQ';
+  'pk.eyJ1IjoiZWZhY3VuZG9hcmdhbmEiLCJhIjoiY2p3em8wNzkzMHV0eDN6cG9xMDkyY3MweCJ9.BFwFTr19FLGdPHqxA8qkiQ';
 
 const getLocation = function () {
   return new Promise((resolve, reject) => {
@@ -23,30 +23,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
-    attributionControl: false,
+    attributionControl: true,
     center: [longitude, latitude],
-    zoom: 10,
+    zoom: 14,
   });
-
-  //Geocoder
-  const geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    marker: {
-      color: 'red',
-    },
-    mapboxgl,
-  });
-
-  map.addControl(geocoder);
-
-  geocoder.on('result', (e) => {
-    console.log(e.result.center);
-    geocoder.clear();
-    new mapboxgl.Marker({ draggable: true, color: 'red' })
-      .setLngLat(e.result.center)
-      .addTo(map);
-  });
-  // Add the geocoder to the map
 
   //Navigation control
   map.addControl(new mapboxgl.NavigationControl());
@@ -109,8 +89,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Create variables to use in getIso()
   const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
-  // var lon = -0.10234470000000001;
-  // var lat = 51.483421799999995;
+  //lon = -0.10234470000000001;
+  //lat = 51.483421799999995;
   let profile = 'walking';
   let minutes = 5;
 
@@ -120,7 +100,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     draggable: false,
   });
 
-  // Create a function that sets up the Isochrone API query then makes an Ajax call
+  //Create a function that sets up the Isochrone API query then makes a call
   const getIso = async () => {
     const query = `${urlBase}${profile}/${longitude},${latitude}?contours_minutes=${minutes}&polygons=true&access_token=${mapboxgl.accessToken}`;
     const response = await fetch(query);
@@ -150,15 +130,42 @@ window.addEventListener('DOMContentLoaded', async () => {
     addOpenWeather(map);
   });
 
-  map.addControl(
+  //Adding directions
+  /* map.addControl(
     new MapboxDirections({
       accessToken: mapboxgl.accessToken,
       unit: 'metric',
       profile: 'mapbox/walking',
+      setOrigin: [longitude, latitude],
+      alternatives: true,
     }),
     'bottom-left',
-  );
+  ); */
 
+  var directions = new MapboxDirections({
+    unit: 'metric',
+    profile: 'mapbox/walking',
+    setOrigin: [longitude, latitude],
+    alternatives: true,
+    accessToken: mapboxgl.accessToken,
+  });
+
+  map.addControl(directions, 'bottom-left');
+
+  map.on('load', function () {
+    directions.setOrigin([longitude, latitude]); // can be address in form setOrigin("12, Elm Street, NY")
+    
+  });
+    
+  //Removing the driving and driving traffic buttom
+  document
+    .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
+    .remove();
+  document
+    .querySelector('label[for="mapbox-directions-profile-driving"]')
+    .remove();
+
+  
   //Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
@@ -191,17 +198,22 @@ window.addEventListener('DOMContentLoaded', async () => {
       "'>Show more at OpenTripMap</a></p>";
 
     new mapboxgl.Popup().setLngLat(lngLat).setDOMContent(poi).addTo(map);
+    const popup = document.getElementsByClassName('mapboxgl-popup');
+    if (popup.length) {
+      popup[0].remove();
+    }
   }
-
-  map.on('click', 'opentripmap-pois', function (e) {
-    let coordinates = e.features[0].geometry.coordinates.slice();
-    let id = e.features[0].properties.id;
-    let name = e.features[0].properties.name;
+  map.on('mouseenter', 'opentripmap-pois', function (e) {
+    map.getCanvas().style.cursor = 'pointer';
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    var id = e.features[0].properties.id;
+    var name = e.features[0].properties.name;
 
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
     apiGet('xid/' + id).then((data) => onShowPOI(data, e.lngLat));
+    
   });
 
   //Show popup by mousemove
