@@ -1,4 +1,4 @@
-import { getLabelLayerId } from './helper-functions.js';
+  import { getLabelLayerId } from './helper-functions.js';
 
 export const addBreezometer = (map) => {
   const apiKey = '8736ffa82743491abc5ed685a0c45f17';
