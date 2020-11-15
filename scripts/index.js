@@ -166,7 +166,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     .remove();
 
   
-  //Open trip map
+/*   //Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
   const apiGet = async (method, query) => {
@@ -243,5 +243,5 @@ window.addEventListener('DOMContentLoaded', async () => {
   map.on('mouseleave', 'opentripmap-pois', function () {
     map.getCanvas().style.cursor = '';
     popup.remove();
-  });
+  }); */
 }); // end of window onload
