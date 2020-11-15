@@ -137,3 +137,34 @@ h2 {
   width: 50%;
   float: left;
 }
+
+/* .mapbox-directions-origin .mapboxgl-ctrl-geocoder {
+  border-radius: 0 3px 0 0;
+  background-color: rgba(255, 255, 255, 0.596);
+}
+
+.mapbox-directions-destination .mapboxgl-ctrl-geocoder {
+  border-radius: 0 3px 0 0;
+  background-color: rgba(255, 255, 255, 0.596);
+} */
+
+.mapbox-directions-inputs button {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mapboxgl-ctrl-geocoder .geocoder-pin-right *.active {
+  display: block;
+  background-color: transparent;
+}
+
+.mapbox-directions-instructions-wrapper {
+    max-height: 10vh;
+}
+
+.mapbox-directions-instructions {
+    overflow: scroll;
+}

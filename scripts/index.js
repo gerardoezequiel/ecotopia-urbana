@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/light-v10',
+    style: 'mapbox://styles/geraezemc/ckhif49jm2l3x19ot4hmqsvz5',
     attributionControl: true,
     center: [longitude, latitude],
     zoom: 14,
@@ -164,9 +164,16 @@ window.addEventListener('DOMContentLoaded', async () => {
   document
     .querySelector('label[for="mapbox-directions-profile-driving"]')
     .remove();
+  
+  /* document.querySelector('label[for="mapbox-directions-profile-driving-traffic"]').addEventListener("click", () => {
+
+  });
+     */
+  
+  
 
   
-/*   //Open trip map
+//Open trip map
   const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
 
   const apiGet = async (method, query) => {
@@ -243,5 +250,5 @@ window.addEventListener('DOMContentLoaded', async () => {
   map.on('mouseleave', 'opentripmap-pois', function () {
     map.getCanvas().style.cursor = '';
     popup.remove();
-  }); */
+  }); 
 }); // end of window onload
