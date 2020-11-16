@@ -1,3 +1,4 @@
+
 #map {
   display: block;
   width: 100%;
@@ -39,7 +40,7 @@ img {
   margin: auto;
   padding: 10px;
   display: block;
-  width: 200px;
+  width: 500px;
 }
 
 h2 {
@@ -50,7 +51,7 @@ h2 {
   margin-top: 0;
 }
 
-/* /* /*menú selección*/
+/*menú selección*/
 #menu {
   display: flex;
   align-items: center;
@@ -65,9 +66,10 @@ h2 {
   border: 1px solid rgba(0, 0, 0, 0.4);
   font-family: 'Open Sans', sans-serif;
 }
+ 
 
 #menu a {
-  padding: 3px;
+  padding: px;
   font-size: 11px;
   color: #404040;
   display: flex;
@@ -109,15 +111,15 @@ h2 {
 
 
 .mapboxgl-ctrl-logo {
-  display: none !important;
+  display: /* none */ !important;
 }
 
 .mapboxgl-ctrl-attrib.mapboxgl-compact {
-  display: none !important;
+  display: /* none */ !important;
 }
 
 .mapbox-directions-profile {
-  background: #fff;
+  background: rgba(221, 217, 217, 0.582);
   margin: 7px 0 0;
   padding: 0px;
   border-radius: 15px;
@@ -162,9 +164,15 @@ h2 {
 }
 
 .mapbox-directions-instructions-wrapper {
-    max-height: 10vh;
+  max-height: 10vh;
 }
 
 .mapbox-directions-instructions {
-    overflow: scroll;
+  overflow: scroll;
+}
+
+.mapboxgl-ctrl-attrib .mapbox-improve-map {
+  font-weight: 700;
+  margin-left: 2px;
+  display: none;
 }
