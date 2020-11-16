@@ -12,24 +12,30 @@ export const addOpenTripLayer = (map) => {
     maxzoom: 14,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=museums&rate=2&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=interesting_places&rate=3&apikey=' +
         apiKey,
     ],
   });
 
   map.addLayer(
     {
-      id: 'opentripmap-pois',
-      type: 'circle',
+      id: 'interesting places',
+      type: 'symbol',
       source: 'opentripmap.pois',
+      layout: {
+        'icon-image': 'circle-11',
+        'icon-size': 0.5,
+        
+      },
       'source-layer': 'pois',
-      minzoom: 8,
-      paint: {
+      minzoom: 10,
+      maxzoom:20,
+      /* paint: {
         'circle-color': 'rgb(55,144,144)',
         'circle-radius': 5,
         'circle-stroke-color': 'rgba(102,193,201, 0.6)',
         'circle-stroke-width': 0.6,
-      },
+      }, */
     },
     'airport-label',
   );
@@ -42,14 +48,14 @@ export const addOpenTripLayer = (map) => {
     maxzoom: 8,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=museums&rate=2&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=interesting_places&rate=3&apikey=' +
         apiKey,
     ],
   });
 
   map.addLayer(
     {
-      id: 'opentripmap-heat',
+      id: 'interesting places heatmap',
       type: 'heatmap',
       source: 'opentripmap.heat',
       'source-layer': 'heat',
@@ -91,6 +97,6 @@ export const addOpenTripLayer = (map) => {
         },
       },
     },
-    'opentripmap-pois',
+    'interesting places',
   );
 };

@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Set up a marker that you can use to show the query's coordinates
   const marker = new mapboxgl.Marker({
     color: '#314ccd',
-    draggable: false,
+    draggable: true,
   });
 
   //Create a function that sets up the Isochrone API query then makes a call
@@ -196,16 +196,15 @@ window.addEventListener('DOMContentLoaded', async () => {
       ? data.info.descr
       : 'No description';
 
-    /* poi.innerHTML += `<p><a target='_blank' href='${data.otm}'>Show more at OpenTripMap</a></p>`; */
+    poi.innerHTML += `<p><a target='_blank' href='${data.otm}'>Show more at OpenTripMap</a></p>`;
 
     new mapboxgl.Popup().setLngLat(lngLat).setDOMContent(poi).addTo(map);
-
     const popup = document.getElementsByClassName('mapboxgl-popup');
     if (popup.length) {
       popup[0].remove();
     }
   }
-  map.on('mouseenter', 'interesting places', (e) => {
+  map.on('mouseenter', 'opentripmap-pois', (e) => {
     map.getCanvas().style.cursor = 'pointer';
     const coordinates = e.features[0].geometry.coordinates.slice();
     const id = e.features[0].properties.id;
@@ -224,7 +223,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     closeOnClick: false,
   });
 
-  map.on('mouseenter', 'interesting places', (e) => {
+  map.on('mouseenter', 'opentripmap-pois', (e) => {
     map.getCanvas().style.cursor = 'pointer';
 
     let coordinates = e.features[0].geometry.coordinates.slice();
@@ -238,7 +237,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     popup.setLngLat(coordinates).setHTML(`<strong>${name}</strong>`).addTo(map);
   });
 
-  map.on('mouseleave', 'interesting places', () => {
+  map.on('mouseleave', 'opentripmap-pois', () => {
     map.getCanvas().style.cursor = '';
     popup.remove();
   });
