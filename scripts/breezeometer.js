@@ -6,7 +6,7 @@ export const addBreezometer = (map) => {
 
   getLabelLayerId(layers);
 
-  map.addSource('breezometer-tiles', {
+  map.addSource('Air quality', {
     type: 'raster',
     attribution:
       '<a href="https://breezometer.com/" target="_blank">© Breezometer</a>',
@@ -19,9 +19,9 @@ export const addBreezometer = (map) => {
 
   map.addLayer(
     {
-      id: 'breezometer-tiles',
+      id: 'Air quality',
       type: 'raster',
-      source: 'breezometer-tiles',
+      source: 'Air quality',
       layout: { visibility: 'none' },
       minzoom: 0,
       maxzoom: 22,

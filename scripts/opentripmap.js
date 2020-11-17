@@ -8,27 +8,27 @@ export const addOpenTripLayer = (map) => {
     attribution:
       '<a href="https://opentripmap.io" target="_blank">© OpenTripMap</a>',
     bounds: [-180, -85.0511, 180, 85.0511],
-    minzoom: 8,
-    maxzoom: 14,
+    minzoom: 12,
+    maxzoom: 20,
     scheme: 'xyz',
     tiles: [
-      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=interesting_places&rate=3&apikey=' +
+      'https://api.opentripmap.com/0.1/en/tiles/pois/{z}/{x}/{y}.pbf?kinds=interesting_places,tourist_facilities,sport&rate=3&apikey=' +
         apiKey,
     ],
   });
 
   map.addLayer(
     {
-      id: 'interesting places',
+      id: 'Interesting places',
       type: 'symbol',
       source: 'opentripmap.pois',
       layout: {
-        'icon-image': 'circle-11',
+        'icon-image': 'circle-15',
         'icon-size': 0.5,
         
       },
       'source-layer': 'pois',
-      minzoom: 10,
+      minzoom: 12,
       maxzoom:20,
       /* paint: {
         'circle-color': 'rgb(55,144,144)',
@@ -44,8 +44,8 @@ export const addOpenTripLayer = (map) => {
   map.addSource('opentripmap.heat', {
     type: 'vector',
     bounds: [-180, -85.0511, 180, 85.0511],
-    minzoom: 1,
-    maxzoom: 8,
+    minzoom: 5,
+    maxzoom: 12,
     scheme: 'xyz',
     tiles: [
       'https://api.opentripmap.com/0.1/en/tiles/heat/{z}/{x}/{y}.pbf?kinds=interesting_places&rate=3&apikey=' +
@@ -55,18 +55,18 @@ export const addOpenTripLayer = (map) => {
 
   map.addLayer(
     {
-      id: 'interesting places heatmap',
+      id: 'Heatmap',
       type: 'heatmap',
       source: 'opentripmap.heat',
       'source-layer': 'heat',
-      minzoom: 1,
-      maxzoom: 10,
+      minzoom: 5,
+      maxzoom: 12,
       filter: ['all'],
       paint: {
         'heatmap-radius': {
           stops: [
-            [1, 4],
-            [10, 20],
+            [1, 3],
+            [10, 3],
           ],
         },
         'heatmap-weight': ['get', 'n'],
@@ -85,18 +85,18 @@ export const addOpenTripLayer = (map) => {
         ],
         'heatmap-intensity': {
           stops: [
-            [3, 0.1],
-            [8, 0.8],
+            [3, 0.5],
+            [8, 0.3],
           ],
         },
         'heatmap-opacity': {
           stops: [
-            [1, 0.9],
+            [1, 0.7],
             [8, 0.3],
           ],
         },
       },
     },
-    'interesting places',
+    'Interesting places',
   );
 };

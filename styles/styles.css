@@ -1,3 +1,4 @@
+@import url('https://use.typekit.net/bzz2oea.css');
 
 #map {
   display: block;
@@ -9,22 +10,43 @@
   right: 0;
   left: 0;
 }
+
+.mapboxgl-popup-content{
+  
+  background-color: #ffffffec;
+}
 img {
   margin: auto;
   padding: 10px;
   display: block;
-  width: 200px;
+  
 }
 
 h2 {
+  font-family: interstate-condensed, sans-serif;
+  font-weight: 900;
+  font-style: normal;
   font-size: 1.25rem;
-  margin-bottom: .5rem;
-  font-weight: 500;
+  margin-bottom: 0.5rem;
   line-height: 1.2;
   margin-top: 0;
+
 }
 
-@media (min-width: 600px){
+i {
+  font-family: interstate, sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+p {
+  font-family: axia, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.10rem;
+}
+
+@media (min-width: 600px) {
   img {
     margin: auto;
     padding: 10px;
@@ -43,42 +65,60 @@ img {
   width: 500px;
 }
 
-h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  line-height: 1.2;
-  margin-top: 0;
+body, input, textarea {
+  color: rgba(0,0,0,.75);
+  font-size: 15px;
+  line-height: 24px;
+  font-family: interstate-condensed, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 1.15rem;
+  -webkit-font-smoothing: antialiased;
 }
 
+.txt-sm txt-bold mb6{
+  font-size: 0.75rem;
+}
+
+.txt-bold {
+    font-weight: 900!important;
+    font-size: smaller;
+}
 /*menú selección*/
 #menu {
-  display: flex;
+  display: inline-flex; 
   align-items: center;
-  padding: 3px;
-  background: #fff;
+  padding: 5;
   position: absolute;
   z-index: 1;
   bottom: 2%;
   right: 30%;
-  border-radius: 3px;
-  width: 595px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  width: 600px;
+ /*  border: 1px solid rgba(0, 0, 0, 0.4); */
   font-family: 'Open Sans', sans-serif;
+  justify-items: center;
+  align-items: center;
 }
- 
 
 #menu a {
   padding: px;
-  font-size: 11px;
   color: #404040;
   display: flex;
-  margin: 0;
-  padding: 0;
-  padding: 3px;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  margin: 5px;
+  padding: 5px;
+  font-family: axia, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
   text-align: center;
+  border-radius: 18px;
+  background-color: #ffffff;
+  display: inline-flex; 
+  font-size: 10px;
+  line-height: 18px;
+  padding: 3px 12px;
+  text-align: center!important;
 }
 
 /* #menu a:last-child {
@@ -86,19 +126,23 @@ h2 {
 }
  */
 #menu a:hover {
-  background-color: #941a1a;
+  background-color: rgb(138,138,203);
   color: #404040;
 }
 
 #menu a.active {
-  background-color: #1a461e6c;
+  background-color: rgb(68,142,228);
   color: #ffffff;
-  border: 2px solid rgb(255, 255, 255);
-  border-radius: 10%;
+ /*  display: inline-flex; */
+  border-radius: 18px;
+  font-size: 10px;
+  line-height: 18px;
+  padding: 3px 12px;
+  text-align: center!important;
 }
 
 #menu a.active:hover {
-  background: #b82121;
+  background: rgb(59,178,208);
 }
 
 #remove-directions {
@@ -109,13 +153,12 @@ h2 {
   font-family: 'Open Sans', sans-serif;
 }
 
-
 .mapboxgl-ctrl-logo {
-  display: /* none */ !important;
+  display: none !important;
 }
 
 .mapboxgl-ctrl-attrib.mapboxgl-compact {
-  display: /* none */ !important;
+  display: none !important;
 }
 
 .mapbox-directions-profile {
@@ -124,7 +167,7 @@ h2 {
   padding: 0px;
   border-radius: 15px;
   vertical-align: middle;
-  width: 150px
+  width: 150px;
 }
 .mapbox-directions-profile label {
   cursor: pointer;
@@ -140,15 +183,6 @@ h2 {
   float: left;
 }
 
-/* .mapbox-directions-origin .mapboxgl-ctrl-geocoder {
-  border-radius: 0 3px 0 0;
-  background-color: rgba(255, 255, 255, 0.596);
-}
-
-.mapbox-directions-destination .mapboxgl-ctrl-geocoder {
-  border-radius: 0 3px 0 0;
-  background-color: rgba(255, 255, 255, 0.596);
-} */
 
 .mapbox-directions-inputs button {
   padding: 0;
@@ -164,7 +198,7 @@ h2 {
 }
 
 .mapbox-directions-instructions-wrapper {
-  max-height: 10vh;
+  max-height: 60vh;
 }
 
 .mapbox-directions-instructions {

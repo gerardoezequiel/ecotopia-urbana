@@ -8,7 +8,7 @@ export const addBuildingLayer = (map) => {
   map.doubleClickZoom.disable();
   map.addLayer(
     {
-      id: '3d-buildings',
+      id: '3D Buildings',
       source: 'composite',
       'source-layer': 'building',
       filter: ['==', 'extrude', 'true'],
