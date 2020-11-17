@@ -1,6 +1,6 @@
 export const addOpenWeather = (map) => {
   map.addLayer({
-    id: 'open-weather-map',
+    id: 'Weather',
     type: 'raster',
     source: {
       type: 'raster',

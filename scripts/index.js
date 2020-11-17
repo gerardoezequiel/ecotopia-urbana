@@ -3,6 +3,7 @@ import { addIsoChrone } from './isochrone.js';
 import { addBuildingLayer } from './buildings3d.js';
 import { addBreezometer } from './breezeometer.js';
 import { addOpenWeather } from './open-weather.js';
+import { addOtmPopUp } from './otm-popup.js'; 
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZWZhY3VuZG9hcmdhbmEiLCJhIjoiY2p3em8wNzkzMHV0eDN6cG9xMDkyY3MweCJ9.BFwFTr19FLGdPHqxA8qkiQ';
@@ -16,17 +17,41 @@ const getLocation = () => {
     );
   });
 };
-
+//The coordinates wait until the IP coordinates are found (async)
 window.addEventListener('DOMContentLoaded', async () => {
   const [longitude, latitude] = await getLocation();
-
+  //Principal options of the map
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/geraezemc/ckhif49jm2l3x19ot4hmqsvz5',
     attributionControl: true,
     center: [longitude, latitude],
-    zoom: 14,
-    pitch: 45,
+    zoom: 8,
+    pitch: 225,
+    bearing: 45, 
+  });
+  //Lets fly!
+ map.flyTo({
+    // These options control the ending camera position: centered at
+    // the target, at zoom level 9, and north up.
+    center: [longitude, latitude],
+    zoom: 18,
+    bearing: 0,
+
+    // These options control the flight curve, making it move
+    // slowly and zoom out almost completely before starting
+    // to pan.
+    speed: 0.1, // make the flying slow
+    curve: 5, // change the speed at which it zooms out
+
+    // This can be any easing function: it takes a number between
+    // 0 and 1 and returns another number between 0 and 1.
+    easing: function (t) {
+      return t;
+    },
+
+    // this animation is considered essential with respect to prefers-reduced-motion
+    essential: true,
   });
 
   //Navigation control
@@ -44,14 +69,23 @@ window.addEventListener('DOMContentLoaded', async () => {
       trackUserLocation: true,
     }),
   );
-
+    //Scale control
+  map.addControl(
+    new mapboxgl.ScaleControl({
+      maxWidth: 100,
+      unit: 'metric',
+    }),
+    'bottom-right',
+  );
+    
+  // A toggle to manage multiple layers
   const toggleableLayerIds = [
-    'interesting places',
-    'interesting places heatmap',
-    'breezometer-tiles',
-    'open-weather-map',
-    'isoLayer',
-    '3d-buildings',
+    'Isochrone',
+    'Interesting places',
+    'Heatmap',
+    'Air quality',
+    'Weather',
+    '3D Buildings',
   ];
 
   toggleableLayerIds.forEach((id) => {
@@ -82,18 +116,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     layers.appendChild(link);
   });
 
-  //Isochrone API
+  //Isochrone API Mapbox
 
   const params = document.getElementById('params');
-
-  //api.mapbox.com/isochrone/v1/mapbox/cycling/-0.09401410262574927%2C51.4876156400322?contours_minutes=15%2C30%2C45%2C60&polygons=true&denoise=1&generalize=0&access_token=YOUR_MAPBOX_ACCESS_TOKEN
 
   // Create variables to use in getIso()
   const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
   //lon = -0.10234470000000001;
   //lat = 51.483421799999995;
   let profile = 'walking';
-  let minutes = 5;
+  let minutes = 15;
 
   // Set up a marker that you can use to show the query's coordinates
   const marker = new mapboxgl.Marker({
@@ -108,7 +140,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const data = await response.json();
     map.getSource('iso').setData(data);
   };
-
+  //If the user click in the buttom the value (html) it's passed to the query
   const onChangeParams = async (event) => {
     if (event.target.name === 'profile') {
       profile = event.target.value;
@@ -128,21 +160,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     addBreezometer(map);
     addOpenWeather(map);
     await addIsoChrone({ map, marker, getIso, longitude, latitude });
+    addOtmPopUp({ map });
     addBuildingLayer(map);
+    directions.setOrigin([longitude, latitude]);
   });
 
-  //Adding directions
-  /* map.addControl(
-    new MapboxDirections({
-      accessToken: mapboxgl.accessToken,
-      unit: 'metric',
-      profile: 'mapbox/walking',
-      setOrigin: [longitude, latitude],
-      alternatives: true,
-    }),
-    'bottom-left',
-  ); */
-
+  //Adding the direction controller with IP direction as origin
   const directions = new MapboxDirections({
     unit: 'metric',
     profile: 'mapbox/walking',
@@ -152,11 +175,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
 
   map.addControl(directions, 'bottom-left');
-
-  map.on('load', () => {
-    directions.setOrigin([longitude, latitude]); // can be address in form setOrigin("12, Elm Street, NY")
-  });
-
+  
   //Removing the driving and driving traffic buttom
   document
     .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
@@ -164,82 +183,4 @@ window.addEventListener('DOMContentLoaded', async () => {
   document
     .querySelector('label[for="mapbox-directions-profile-driving"]')
     .remove();
-
-  /* document.querySelector('label[for="mapbox-directions-profile-driving-traffic"]').addEventListener("click", () => {
-
-  });
-     */
-
-  //Open trip map
-  const apiKey = '5ae2e3f221c38a28845f05b6ed0662748f2fdf24cede18cf28fcee8a';
-
-  const apiGet = async (method, query) => {
-    const url =
-      query !== undefined
-        ? `https://api.opentripmap.com/0.1/en/places/${method}?apikey=${apiKey}&${query}`
-        : `https://api.opentripmap.com/0.1/en/places/${method}?apikey=${apiKey}`;
-
-    const response = await fetch(url);
-    return await response.json();
-  };
-
-  function onShowPOI(data, lngLat) {
-    let poi = document.createElement('div');
-    poi.innerHTML = `<h2>${data.name}<h2>`;
-    poi.innerHTML += `<p><i>${getCategoryName(data.kinds)}</i></p>`;
-    if (data.preview) {
-      poi.innerHTML += `<img src='${data.preview.source}'>`;
-    }
-    poi.innerHTML += data.wikipedia_extracts
-      ? data.wikipedia_extracts.html
-      : data.info
-      ? data.info.descr
-      : 'No description';
-
-    /* poi.innerHTML += `<p><a target='_blank' href='${data.otm}'>Show more at OpenTripMap</a></p>`; */
-
-    new mapboxgl.Popup().setLngLat(lngLat).setDOMContent(poi).addTo(map);
-
-    const popup = document.getElementsByClassName('mapboxgl-popup');
-    if (popup.length) {
-      popup[0].remove();
-    }
-  }
-  map.on('mouseenter', 'interesting places', (e) => {
-    map.getCanvas().style.cursor = 'pointer';
-    const coordinates = e.features[0].geometry.coordinates.slice();
-    const id = e.features[0].properties.id;
-    const name = e.features[0].properties.name;
-
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-    apiGet(`xid/${id}`).then((data) => onShowPOI(data, e.lngLat));
-  });
-
-  //Show popup by mousemove
-
-  let popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false,
-  });
-
-  map.on('mouseenter', 'interesting places', (e) => {
-    map.getCanvas().style.cursor = 'pointer';
-
-    let coordinates = e.features[0].geometry.coordinates.slice();
-    let id = e.features[0].properties.id;
-    let name = e.features[0].properties.name;
-
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-
-    popup.setLngLat(coordinates).setHTML(`<strong>${name}</strong>`).addTo(map);
-  });
-
-  map.on('mouseleave', 'interesting places', () => {
-    map.getCanvas().style.cursor = '';
-    popup.remove();
-  });
 }); // end of window onload

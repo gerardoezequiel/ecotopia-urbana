@@ -16,10 +16,10 @@ export const addIsoChrone = async ({
 
   map.addLayer(
     {
-      id: 'isoLayer',
+      id: 'Isochrone',
       type: 'fill',
       source: 'iso',
-      /* layout: { visibility: 'none' }, */
+      layout: { visibility: 'none' },
       paint: {
         'fill-color': '#5a3fc0',
         'fill-opacity': 0.3,
