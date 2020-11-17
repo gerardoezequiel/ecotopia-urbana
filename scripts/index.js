@@ -17,10 +17,10 @@ const getLocation = () => {
     );
   });
 };
-
+//The coordinates wait until the IP coordinates are found (async)
 window.addEventListener('DOMContentLoaded', async () => {
   const [longitude, latitude] = await getLocation();
-  
+  //Principal options of the map
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/geraezemc/ckhif49jm2l3x19ot4hmqsvz5',
@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     pitch: 225,
     bearing: 45, 
   });
-
+  //Lets fly!
  map.flyTo({
     // These options control the ending camera position: centered at
     // the target, at zoom level 9, and north up.
@@ -69,7 +69,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       trackUserLocation: true,
     }),
   );
-
+    //Scale control
   map.addControl(
     new mapboxgl.ScaleControl({
       maxWidth: 100,
@@ -78,9 +78,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     'bottom-right',
   );
     
-    
-
-
+  // A toggle to manage multiple layers
   const toggleableLayerIds = [
     'Isochrone',
     'Interesting places',
@@ -118,11 +116,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     layers.appendChild(link);
   });
 
-  //Isochrone API
+  //Isochrone API Mapbox
 
   const params = document.getElementById('params');
-
-  //api.mapbox.com/isochrone/v1/mapbox/cycling/-0.09401410262574927%2C51.4876156400322?contours_minutes=15%2C30%2C45%2C60&polygons=true&denoise=1&generalize=0&access_token=YOUR_MAPBOX_ACCESS_TOKEN
 
   // Create variables to use in getIso()
   const urlBase = 'https://api.mapbox.com/isochrone/v1/mapbox/';
@@ -144,7 +140,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const data = await response.json();
     map.getSource('iso').setData(data);
   };
-
+  //If the user click in the buttom the value (html) it's passed to the query
   const onChangeParams = async (event) => {
     if (event.target.name === 'profile') {
       profile = event.target.value;
@@ -169,7 +165,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     directions.setOrigin([longitude, latitude]);
   });
 
-
+  //Adding the direction controller with IP direction as origin
   const directions = new MapboxDirections({
     unit: 'metric',
     profile: 'mapbox/walking',
@@ -180,7 +176,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   map.addControl(directions, 'bottom-left');
   
-
   //Removing the driving and driving traffic buttom
   document
     .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')

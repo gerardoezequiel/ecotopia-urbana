@@ -11,10 +11,6 @@
   left: 0;
 }
 
-.mapboxgl-popup-content{
-  
-  background-color: #ffffffec;
-}
 img {
   margin: auto;
   padding: 10px;
@@ -81,10 +77,14 @@ body, input, textarea {
 }
 
 .txt-bold {
-    font-weight: 900!important;
-    font-size: smaller;
+  font-weight: 900!important;
+  font-size: smaller;
 }
-/*menú selección*/
+
+.mapboxgl-popup-content{
+  background-color: #ffffffec;
+}
+
 #menu {
   display: inline-flex; 
   align-items: center;
@@ -121,10 +121,6 @@ body, input, textarea {
   text-align: center!important;
 }
 
-/* #menu a:last-child {
-  border: none;
-}
- */
 #menu a:hover {
   background-color: rgb(138,138,203);
   color: #404040;
@@ -171,7 +167,6 @@ body, input, textarea {
 }
 .mapbox-directions-profile label {
   cursor: pointer;
-  vertical-align: top;
   display: block;
   border-radius: 16px;
   padding: 3px 5px;
