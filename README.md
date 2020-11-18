@@ -35,7 +35,7 @@ To get started with the map you'll need the 4 API key:
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/fvcproductions/SOMEREPO`
+- Clone this repo to your local machine using `https://github.com/gerardoezequiel/ecotopia-urbana.git`
 
 ### Setup
 
