@@ -193,7 +193,7 @@ body, input, textarea {
 }
 
 .mapbox-directions-instructions-wrapper {
-  max-height: 60vh;
+  max-height: 10vh;
 }
 
 .mapbox-directions-instructions {

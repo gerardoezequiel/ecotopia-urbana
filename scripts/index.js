@@ -3,7 +3,7 @@ import { addIsoChrone } from './isochrone.js';
 import { addBuildingLayer } from './buildings3d.js';
 import { addBreezometer } from './breezeometer.js';
 import { addOpenWeather } from './open-weather.js';
-import { addOtmPopUp } from './otm-popup.js'; 
+import { addOtmPopUp } from './otm-popup.js';
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZWZhY3VuZG9hcmdhbmEiLCJhIjoiY2p3em8wNzkzMHV0eDN6cG9xMDkyY3MweCJ9.BFwFTr19FLGdPHqxA8qkiQ';
@@ -27,11 +27,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     attributionControl: true,
     center: [longitude, latitude],
     zoom: 8,
-    pitch: 225,
-    bearing: 45, 
+    /* pitch: 225,
+    bearing: 45, */
   });
-  //Lets fly!
- map.flyTo({
+
+  //Lets fly to the user location!
+ /*  map.flyTo({
     // These options control the ending camera position: centered at
     // the target, at zoom level 9, and north up.
     center: [longitude, latitude],
@@ -52,7 +53,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // this animation is considered essential with respect to prefers-reduced-motion
     essential: true,
-  });
+  }); */
 
   //Navigation control
   map.addControl(new mapboxgl.NavigationControl());
@@ -69,7 +70,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       trackUserLocation: true,
     }),
   );
-    //Scale control
+  //Scale control
   map.addControl(
     new mapboxgl.ScaleControl({
       maxWidth: 100,
@@ -77,7 +78,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }),
     'bottom-right',
   );
-    
+
   // A toggle to manage multiple layers
   const toggleableLayerIds = [
     'Isochrone',
@@ -173,9 +174,15 @@ window.addEventListener('DOMContentLoaded', async () => {
     alternatives: true,
     accessToken: mapboxgl.accessToken,
   });
-
+  directions.on('profile', async (event) => {
+    const transportMethod = event.profile;
+    const directionMethod = transportMethod.split('/').pop();
+    profile = directionMethod;
+    await getIso();
+    
+  });
   map.addControl(directions, 'bottom-left');
-  
+
   //Removing the driving and driving traffic buttom
   document
     .querySelector('label[for="mapbox-directions-profile-driving-traffic"]')
