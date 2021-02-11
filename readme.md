@@ -91,11 +91,4 @@ $ cd ecotopia-urbana
 
 ---
 
-## Team
-
-
-|                 <a href="https://www.linkedin.com/in/gerardoezequiel/" target="_blank">**Gerardo Ezequiel**</a> 
-| :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| [![Gerardo Ezequiel](https://avatars0.githubusercontent.com/u/34824185?s=400&u=44b908b6b0bff188a635e30c31f1879863c66d26&v=4&s=200)](https://www.linkedin.com/in/gerardoezequiel/) 
-|         <a href="https://github.com/gerardoezequiel" target="_blank">`github.com/gerardoezequiel`</a>        |
 
