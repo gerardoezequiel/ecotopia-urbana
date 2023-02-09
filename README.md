@@ -1,10 +1,7 @@
-![](https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/General_Assembly_logo.svg/320px-General_Assembly_logo.svg.png)
 
 # Ecotopia urbana web map
 
 > Web map that shows you points of interest with a small description, directions to arrive and environmental information, air quality and temperature.
-
-> General Assembly Software Engineering Bootcamp SEI-ES 01 Final Project
 
 
 ## Table of Contents
@@ -91,11 +88,4 @@ $ cd ecotopia-urbana
 
 ---
 
-## Team
-
-
-|                 <a href="https://www.linkedin.com/in/gerardoezequiel/" target="_blank">**Gerardo Ezequiel**</a> 
-| :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
-| [![Gerardo Ezequiel](https://avatars0.githubusercontent.com/u/34824185?s=400&u=44b908b6b0bff188a635e30c31f1879863c66d26&v=4&s=200)](https://www.linkedin.com/in/gerardoezequiel/) 
-|         <a href="https://github.com/gerardoezequiel" target="_blank">`github.com/gerardoezequiel`</a>        |
 
