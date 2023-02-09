@@ -3,7 +3,7 @@
 
 > Web map that shows you points of interest with a small description, directions to arrive and environmental information, air quality and temperature.
 
-
+[Webmap 🗺️](https://ecotopia-urbana-map.glitch.me)
 ## Table of Contents
 
 - [Ecotopia urbana web map](#ecotopia-urbana-web-map)
@@ -24,7 +24,7 @@
 
 ## Installation
 
-To get started with the map you'll need the 4 API key:
+To get started with the map you'll need the following 4 API keys:
 - [Mapbox](https://www.mapbox.com/)
 - [Open Trip Map](https://opentripmap.io/product)
 - [Breezometer](https://docs.breezometer.com/api-documentation/air-quality-api/v2/)
